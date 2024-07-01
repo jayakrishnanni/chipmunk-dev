@@ -1,0 +1,19 @@
+.dropdown-content {
+    padding: 16px;
+  }
+  
+  .dropdown-content mat-form-field {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+  
+  .mat-expansion-panel-header {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .mat-expansion-panel-header mat-icon {
+    margin-right: 8px;
+  }
+  
