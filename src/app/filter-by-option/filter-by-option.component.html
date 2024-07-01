@@ -1,0 +1,92 @@
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Group Name</mat-label>
+        <input matInput formControlName="groupName">
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Date From</mat-label>
+        <input matInput [matDatepicker]="fromPicker" formControlName="dateFrom">
+        <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromPicker></mat-datepicker>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Date To</mat-label>
+        <input matInput [matDatepicker]="toPicker" formControlName="dateTo">
+        <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+        <mat-datepicker #toPicker></mat-datepicker>
+      </mat-form-field>
+  
+      <button mat-button [matMenuTriggerFor]="dropdownMenu">Dropdown</button>
+      <mat-menu #dropdownMenu="matMenu">
+        <div mat-accordion>
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon>keyboard_arrow_down</mat-icon>
+                Dropdown Input 1
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-form-field appearance="fill">
+              <mat-label>Dropdown Input 1</mat-label>
+              <input matInput formControlName="dropdownInput1">
+            </mat-form-field>
+          </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon>keyboard_arrow_down</mat-icon>
+                Dropdown Input 2
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-form-field appearance="fill">
+              <mat-label>Dropdown Input 2</mat-label>
+              <input matInput formControlName="dropdownInput2">
+            </mat-form-field>
+          </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon>keyboard_arrow_down</mat-icon>
+                Date From
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-form-field appearance="fill">
+              <mat-label>Date From</mat-label>
+              <input matInput [matDatepicker]="dropdownFromPicker" formControlName="dropdownDateFrom">
+              <mat-datepicker-toggle matSuffix [for]="dropdownFromPicker"></mat-datepicker-toggle>
+              <mat-datepicker #dropdownFromPicker></mat-datepicker>
+            </mat-form-field>
+          </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon>keyboard_arrow_down</mat-icon>
+                Date To
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-form-field appearance="fill">
+              <mat-label>Date To</mat-label>
+              <input matInput [matDatepicker]="dropdownToPicker" formControlName="dropdownDateTo">
+              <mat-datepicker-toggle matSuffix [for]="dropdownToPicker"></mat-datepicker-toggle>
+              <mat-datepicker #dropdownToPicker></mat-datepicker>
+            </mat-form-field>
+          </mat-expansion-panel>
+        </div>
+        <button mat-button (click)="applyDropdownValues()">Apply</button>
+      </mat-menu>
+    </div>
+  
+    <div class="form-row">
+      <button mat-button type="button" (click)="clearAll()">Clear All</button>
+      <button mat-raised-button color="primary" type="submit">Search</button>
+    </div>
+  </form>
+  
