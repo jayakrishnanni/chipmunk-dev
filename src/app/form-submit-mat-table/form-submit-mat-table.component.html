@@ -1,0 +1,69 @@
+<div class="container">
+    <mat-accordion>
+      <!-- Expansion Panel 1 -->
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Input Form
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="inputForm" (ngSubmit)="onSubmitInputForm()">
+          <mat-form-field>
+            <mat-label>Input 1</mat-label>
+            <input matInput formControlName="input1">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Input 2</mat-label>
+            <input matInput formControlName="input2">
+          </mat-form-field>
+          <button mat-button type="button" (click)="clearInputForm()">Clear All</button>
+          <button mat-button type="submit">Submit</button>
+        </form>
+      </mat-expansion-panel>
+  
+      <!-- Expansion Panel 2 -->
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Table with Checkboxes
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="tableForm" (ngSubmit)="onSubmitTableForm()">
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox
+                  (change)="$event ? masterToggle() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()"
+                              (change)="$event ? toggleSelection(row) : null"
+                              [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+              </td>
+            </ng-container>
+            <!-- Data Columns -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          <button mat-button type="button" (click)="clearTableForm()">Clear All</button>
+          <button mat-button type="submit">Submit</button>
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
+  
+    <!-- Common Buttons -->
+    <div class="common-buttons">
+      <button mat-button (click)="clearAllForms()">Clear All</button>
+      <button mat-button (click)="submitAllForms()">Submit</button>
+    </div>
+  </div>
+  

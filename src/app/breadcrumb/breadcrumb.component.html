@@ -1,0 +1,14 @@
+<!-- breadcrumb.component.html -->
+<nav>
+    <ng-container *ngIf="(breadcrumbs$ | async) as breadcrumbs">
+      <a *ngFor="let breadcrumb of breadcrumbs; let last = last"
+         [routerLink]="breadcrumb.url"
+         [class.active]="last">
+        {{ breadcrumb.label }}<ng-container *ngIf="!last"> > </ng-container>
+      </a>
+    </ng-container>
+  </nav>
+  
+
+  <!-- example component
+  <app-breadcrumb></app-breadcrumb> -->

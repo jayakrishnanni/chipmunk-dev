@@ -12,11 +12,15 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxTableExpanisonComponent } from './checkbox-table-expanison/checkbox-table-expanison.component';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { FormSubmitMatTableComponent } from './form-submit-mat-table/form-submit-mat-table.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CheckboxTableExpanisonComponent
+    CheckboxTableExpanisonComponent,
+    BreadcrumbComponent,
+    FormSubmitMatTableComponent
   ],
   imports: [
     BrowserModule,
