@@ -14,13 +14,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxTableExpanisonComponent } from './checkbox-table-expanison/checkbox-table-expanison.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { FormSubmitMatTableComponent } from './form-submit-mat-table/form-submit-mat-table.component';
+import { MatInputComponent } from './mat-input/mat-input.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CheckboxTableExpanisonComponent,
     BreadcrumbComponent,
-    FormSubmitMatTableComponent
+    FormSubmitMatTableComponent,
+    MatInputComponent
   ],
   imports: [
     BrowserModule,
