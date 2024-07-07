@@ -15,6 +15,7 @@ import { CheckboxTableExpanisonComponent } from './checkbox-table-expanison/chec
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { FormSubmitMatTableComponent } from './form-submit-mat-table/form-submit-mat-table.component';
 import { MatInputComponent } from './mat-input/mat-input.component';
+import { ErrorDialogBoxComponent } from './error-dialog-box/error-dialog-box.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { MatInputComponent } from './mat-input/mat-input.component';
     CheckboxTableExpanisonComponent,
     BreadcrumbComponent,
     FormSubmitMatTableComponent,
-    MatInputComponent
+    MatInputComponent,
+    ErrorDialogBoxComponent
   ],
   imports: [
     BrowserModule,
