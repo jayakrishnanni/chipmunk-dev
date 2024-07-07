@@ -13,20 +13,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxTableExpanisonComponent } from './checkbox-table-expanison/checkbox-table-expanison.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
-import { FormSubmitMatTableComponent } from './form-submit-mat-table/form-submit-mat-table.component';
 import { MatInputComponent } from './mat-input/mat-input.component';
 import { ErrorDialogBoxComponent } from './error-dialog-box/error-dialog-box.component';
 import { LoaderComponent } from './loader/loader.component';
+import { DatePcikerComponent } from './date-pciker/date-pciker.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
     AppComponent,
     CheckboxTableExpanisonComponent,
     BreadcrumbComponent,
-    FormSubmitMatTableComponent,
     MatInputComponent,
     ErrorDialogBoxComponent,
-    LoaderComponent
+    LoaderComponent,
+    DatePcikerComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +40,13 @@ import { LoaderComponent } from './loader/loader.component';
     MatExpansionModule,
     MatMenuModule,
     BrowserAnimationsModule,
-    MatIconModule
+    MatIconModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
