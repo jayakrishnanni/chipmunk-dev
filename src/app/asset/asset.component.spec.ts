@@ -1,71 +1,108 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { AssetComponent } from './asset.component';
-
-describe('AssetComponent', () => {
-  let component: AssetComponent;
-  let fixture: ComponentFixture<AssetComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ AssetComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(AssetComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
-
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { of, throwError } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 import { YourComponent } from './your.component'; // Adjust the import according to your file structure
+import { AssetGroupService } from './asset-group.service'; // Adjust the import according to your file structure
+import { SuccessDialogBoxComponent } from './success-dialog-box/success-dialog-box.component'; // Adjust the import according to your file structure
+import { ErrorDialogBoxComponent } from './error-dialog-box/error-dialog-box.component'; // Adjust the import according to your file structure
 
 describe('YourComponent', () => {
   let component: YourComponent;
   let fixture: ComponentFixture<YourComponent>;
+  let datePipe: DatePipe;
+  let assetGroupService: jasmine.SpyObj<AssetGroupService>;
+  let dialog: jasmine.SpyObj<MatDialog>;
 
   beforeEach(async () => {
+    const assetGroupServiceSpy = jasmine.createSpyObj('AssetGroupService', ['updateDataAssetGroup']);
+    const dialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+
     await TestBed.configureTestingModule({
       declarations: [YourComponent],
       imports: [ReactiveFormsModule],
-      providers: [FormBuilder],
+      providers: [
+        FormBuilder,
+        DatePipe,
+        { provide: AssetGroupService, useValue: assetGroupServiceSpy },
+        { provide: MatDialog, useValue: dialogSpy }
+      ]
     }).compileComponents();
+
+    datePipe = TestBed.inject(DatePipe);
+    assetGroupService = TestBed.inject(AssetGroupService) as jasmine.SpyObj<AssetGroupService>;
+    dialog = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(YourComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
 
-    // Initialize the FormGroup
+    // Initialize form
     component.editAssetGroup = new FormBuilder().group({
-      // form controls initialization
+      assetGroupOwner: [''],
+      dateRetired: [''],
+      assetGroupNotes: ['']
     });
 
-    // Initialize Subjects
-    component.clearAllClickEventforPII = new Subject<void>();
-    component.clearAllClickEventforUsers = new Subject<void>();
+    // Mock form values and additional properties
+    component.editAssetGroupUsers = [];
+    component.editAssetGroupPII = [];
 
     fixture.detectChanges();
   });
 
-  it('should reset the form and emit events when clearAllEditAssetDataGroup is called', () => {
-    spyOn(component.editAssetGroup, 'reset');
-    spyOn(component.clearAllClickEventforPII, 'next');
-    spyOn(component.clearAllClickEventforUsers, 'next');
+  it('should submit the form and handle success response', () => {
+    const mockResponse = { status: 'Success' };
+    assetGroupService.updateDataAssetGroup.and.returnValue(of(mockResponse));
 
-    component.clearAllEditAssetDataGroup();
+    component.editAssetGroup.setValue({
+      assetGroupOwner: 'Owner',
+      dateRetired: new Date(),
+      assetGroupNotes: 'Some notes'
+    });
 
-    expect(component.editAssetGroup.reset).toHaveBeenCalled();
-    expect(component.clearAllClickEventforPII.next).toHaveBeenCalled();
-    expect(component.clearAllClickEventforUsers.next).toHaveBeenCalled();
+    spyOn(datePipe, 'transform').and.returnValue('01/01/2022');
+
+    component.submitUpdateAssetGroup();
+
+    expect(assetGroupService.updateDataAssetGroup).toHaveBeenCalled();
+    expect(dialog.open).toHaveBeenCalledWith(SuccessDialogBoxComponent, { data: { message: 'Success' } });
+  });
+
+  it('should submit the form and handle error response', () => {
+    const mockResponse = { status: 'Error' };
+    assetGroupService.updateDataAssetGroup.and.returnValue(of(mockResponse));
+
+    component.editAssetGroup.setValue({
+      assetGroupOwner: 'Owner',
+      dateRetired: new Date(),
+      assetGroupNotes: 'Some notes'
+    });
+
+    spyOn(datePipe, 'transform').and.returnValue('01/01/2022');
+
+    component.submitUpdateAssetGroup();
+
+    expect(assetGroupService.updateDataAssetGroup).toHaveBeenCalled();
+    expect(dialog.open).toHaveBeenCalledWith(ErrorDialogBoxComponent, { data: { message: 'Error' } });
+  });
+
+  it('should handle service call failure', () => {
+    assetGroupService.updateDataAssetGroup.and.returnValue(throwError('Service failure'));
+
+    component.editAssetGroup.setValue({
+      assetGroupOwner: 'Owner',
+      dateRetired: new Date(),
+      assetGroupNotes: 'Some notes'
+    });
+
+    spyOn(datePipe, 'transform').and.returnValue('01/01/2022');
+
+    component.submitUpdateAssetGroup();
+
+    expect(assetGroupService.updateDataAssetGroup).toHaveBeenCalled();
+    expect(dialog.open).toHaveBeenCalledWith(ErrorDialogBoxComponent, { data: { message: 'Service failure' } });
   });
 });
-
