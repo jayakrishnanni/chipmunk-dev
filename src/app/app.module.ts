@@ -18,6 +18,7 @@ import { ErrorDialogBoxComponent } from './error-dialog-box/error-dialog-box.com
 import { LoaderComponent } from './loader/loader.component';
 import { DatePcikerComponent } from './date-pciker/date-pciker.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { AssetComponent } from './asset/asset.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatInputComponent,
     ErrorDialogBoxComponent,
     LoaderComponent,
-    DatePcikerComponent
+    DatePcikerComponent,
+    AssetComponent
   ],
   imports: [
     BrowserModule,
