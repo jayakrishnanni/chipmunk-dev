@@ -1,0 +1,103 @@
+// service file
+
+
+// excel-export.service.ts
+import { Injectable } from '@angular/core';
+import * as ExcelJS from 'exceljs';
+import { saveAs } from 'file-saver';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ExcelExportService {
+
+  constructor() { }
+
+  exportAsExcelFile(json: any[], excelFileName: string): void {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Sheet1');
+    
+    // Add header row
+    const headers = Object.keys(json[0]);
+    worksheet.addRow(headers);
+
+    // Add data rows
+    json.forEach(data => {
+      worksheet.addRow(Object.values(data));
+    });
+
+    workbook.xlsx.writeBuffer().then((buffer) => {
+      this.saveAsExcelFile(buffer, excelFileName);
+    });
+  }
+
+  private saveAsExcelFile(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
+    saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
+}
+
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+const EXCEL_EXTENSION = '.xlsx';
+
+
+
+
+
+// search-results.component.ts
+import { Component, ViewChild } from '@angular/core';
+import { MatTable } from '@angular/material/table';
+import { ExcelExportService } from './excel-export.service';
+
+@Component({
+  selector: 'app-search-results',
+  templateUrl: './search-results.component.html',
+  styleUrls: ['./search-results.component.css']
+})
+export class SearchResultsComponent {
+  displayedColumns: string[] = ['id', 'name', 'age'];
+  dataSource = [
+    { id: 1, name: 'John Doe', age: 25 },
+    { id: 2, name: 'Jane Doe', age: 30 }
+  ];
+
+  @ViewChild(MatTable) table: MatTable<any>;
+
+  constructor(private excelExportService: ExcelExportService) {}
+
+  downloadExcel(): void {
+    this.excelExportService.exportAsExcelFile(this.dataSource, 'search_results');
+  }
+}
+
+
+
+<!-- search-results.component.html -->
+<button mat-raised-button (click)="downloadExcel()">Download Excel</button>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <!-- ID Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> ID </th>
+    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <!-- Age Column -->
+  <ng-container matColumnDef="age">
+    <th mat-header-cell *matHeaderCellDef> Age </th>
+    <td mat-cell *matCellDef="let element"> {{element.age}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+
+
+
